@@ -77,6 +77,8 @@ class UserController extends Controller
             }
         }
 
-        return Responses::CREATED('Usuário criado com sucesso!');
+        $token = $createUser->createToken('auth_token')->plainTextToken;
+
+        return Responses::CREATED('Usuário criado com sucesso!', $token);
     }
 }
