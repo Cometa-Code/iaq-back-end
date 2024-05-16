@@ -58,4 +58,28 @@ class YoungApprenticesController extends Controller
 
         return Responses::CREATED('Jovem aprendiz adicionado com sucesso!');
     }
+
+    public function index(Request $request)
+    {
+        $user = Auth::user();
+
+        if ($user->role != 'admin' && $user->role != 'superadmin') {
+            return Responses::BADREQUEST('Apenas usuários permitidos podem executar essa ação!');
+        }
+
+        $itemsPerPage = $request->query('items_per_page', 10);
+        $termsFilter = $request->query('terms_filter', '');
+
+        $listYoungApprentices = User::where(function($query) use ($termsFilter) {
+                                    $query->where('name', 'LIKE', "%$termsFilter%")
+                                        ->orWhere('email', 'LIKE', "%$termsFilter%")
+                                        ->orWhere('principal_document', 'LIKE', "%$termsFilter%");
+                                    })
+                                    ->where('role', '=', 'youngapprentice')
+                                    ->with('young_apprentice_data')
+                                    ->orderBy('id', 'DESC')
+                                    ->paginate($itemsPerPage);
+
+        return Responses::OK('', $listYoungApprentices);
+    }
 }
