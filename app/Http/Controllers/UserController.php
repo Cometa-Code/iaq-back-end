@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Http\Helpers\Responses;
 use App\Http\Requests\User\CreateUserRequest;
+use App\Http\Requests\User\LoginRequest;
 use App\Models\CompanyData;
 use App\Models\User;
 use App\Models\YoungApprenticeData;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -96,5 +98,26 @@ class UserController extends Controller
         }
 
         return $user;
+    }
+
+    public function login(LoginRequest $request)
+    {
+        $hasUser = User::where('email', $request->username)
+                        ->orWhere('principal_document', $request->username)
+                        ->first();
+
+        if (!$hasUser) {
+            return Responses::BADREQUEST('Usuário ou senha incorretos!');
+        }
+
+        if (!Hash::check($request->password, $hasUser->password)) {
+            return Responses::BADREQUEST('Usuário ou senha incorretos!');
+        }
+
+        $token = $hasUser->createToken('auth_token')->plainTextToken;
+
+        return Responses::OK('Usuário autenticado com sucesso!', [
+            'token' => $token
+        ]);
     }
 }
