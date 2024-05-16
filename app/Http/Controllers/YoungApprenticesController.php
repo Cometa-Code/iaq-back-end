@@ -82,4 +82,33 @@ class YoungApprenticesController extends Controller
 
         return Responses::OK('', $listYoungApprentices);
     }
+
+    public function update(Request $request, $id)
+    {
+        $user = Auth::user();
+
+        if ($user->role != 'admin' && $user->role != 'superadmin') {
+            return Responses::BADREQUEST('Apenas usuários permitidos podem executar essa ação!');
+        }
+
+        $getUser = User::where('id', $id)->first();
+
+        if (!$getUser) {
+            return Responses::NOTFOUND('Usuário não encontrado!');
+        }
+
+        $updateUser = $getUser->update($request->all());
+
+        if (!$updateUser) {
+            return Responses::BADREQUEST('Ocorreu um erro durante a atualização do jovem aprendiz!');
+        }
+
+        $updateData = $getUser->young_apprentice_data->update($request->all());
+
+        if (!$updateData) {
+            return Responses::BADREQUEST('Ocorreu um erro durante a atualização do jovem aprendiz!');
+        }
+
+        return Responses::OK('Associado atualizado com sucesso!');
+    }
 }

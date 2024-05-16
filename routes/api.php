@@ -25,5 +25,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::post('/young_apprentices', [YoungApprenticesController::class, 'store']);
     Route::get('/young_apprentices', [YoungApprenticesController::class, 'index']);
+    Route::put('/young_apprentices/{id}', [YoungApprenticesController::class, 'update']);
 
 });
