@@ -23,7 +23,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::get('/user', [UserController::class, 'user']);
 
-    Route::post('/young_apprentice', [YoungApprenticesController::class, 'store']);
-    Route::get('/young_apprentice', [YoungApprenticesController::class, 'index']);
+    Route::post('/young_apprentices', [YoungApprenticesController::class, 'store']);
+    Route::get('/young_apprentices', [YoungApprenticesController::class, 'index']);
 
 });
