@@ -16,3 +16,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::post('/user', [UserController::class, 'store']);
+
+Route::group(['middleware' => ['auth:sanctum']], function () {
+
+    Route::get('/user', [UserController::class, 'user']);
+
+});

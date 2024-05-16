@@ -8,6 +8,7 @@ use App\Models\CompanyData;
 use App\Models\User;
 use App\Models\YoungApprenticeData;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -80,5 +81,20 @@ class UserController extends Controller
         $token = $createUser->createToken('auth_token')->plainTextToken;
 
         return Responses::CREATED('Usuário criado com sucesso!', $token);
+    }
+
+    public function user()
+    {
+        $user = Auth::user();
+
+        if ($user->role == 'company') {
+            $user->company_data;
+        }
+
+        if ($user->role == 'youngapprentice') {
+            $user->young_apprentice_data;
+        }
+
+        return $user;
     }
 }
