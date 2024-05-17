@@ -61,8 +61,8 @@ class ContractsController extends Controller
         $termsFilter = $request->query('terms_filter', '');
 
         $listContracts = Contracts::where('contract_number', 'LIKE', "%$termsFilter%")
-                                    ->with('young_apprentice')
-                                    ->with('company')
+                                    ->with('young_apprentice.young_apprentice_data')
+                                    ->with('company.company_data')
                                     ->with('cbo')
                                     ->paginate($itemsPerPage);
 
@@ -78,8 +78,8 @@ class ContractsController extends Controller
         }
 
         $contract = Contracts::where('id', $id)
-                                    ->with('young_apprentice')
-                                    ->with('company')
+                                    ->with('young_apprentice.young_apprentice_data')
+                                    ->with('company.company_data')
                                     ->with('cbo')
                                     ->first();
 
