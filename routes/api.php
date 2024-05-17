@@ -30,5 +30,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::get('/companies', [CompaniesController::class, 'index']);
     Route::post('/companies', [CompaniesController::class, 'store']);
+    Route::put('/companies/{id}', [CompaniesController::class, 'update']);
 
 });

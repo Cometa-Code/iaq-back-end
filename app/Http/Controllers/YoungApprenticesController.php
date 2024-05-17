@@ -109,6 +109,6 @@ class YoungApprenticesController extends Controller
             return Responses::BADREQUEST('Ocorreu um erro durante a atualização do jovem aprendiz!');
         }
 
-        return Responses::OK('Associado atualizado com sucesso!');
+        return Responses::OK('Jovem atualizado com sucesso!');
     }
 }
