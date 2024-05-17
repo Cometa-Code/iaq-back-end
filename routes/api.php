@@ -40,6 +40,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::get('/contracts', [ContractsController::class, 'index']);
     Route::get('/contracts/{id}', [ContractsController::class, 'show']);
+    Route::get('/contracts/data/to_contract', [ContractsController::class, 'get_data_to_create_contract']);
+    Route::get('/contracts/data/to_make_contract/{apprentice_id}/{company_id}/{cbo_id}', [ContractsController::class, 'get_full_infos_to_make_contract']);
     Route::post('/contracts', [ContractsController::class, 'store']);
     Route::put('/contracts/{id}', [ContractsController::class, 'update']);
 

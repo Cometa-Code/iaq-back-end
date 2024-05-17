@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Helpers\Responses;
 use App\Http\Requests\Contracts\CreateContractRequest;
 use App\Models\Cbos;
+use App\Models\CompanyData;
 use App\Models\Contracts;
 use App\Models\User;
+use App\Models\YoungApprenticeData;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -64,6 +66,7 @@ class ContractsController extends Controller
                                     ->with('young_apprentice.young_apprentice_data')
                                     ->with('company.company_data')
                                     ->with('cbo')
+                                    ->orderBy('id', 'DESC')
                                     ->paginate($itemsPerPage);
 
         return Responses::OK('', $listContracts);
@@ -88,5 +91,55 @@ class ContractsController extends Controller
         }
 
         return Responses::OK('', $contract);
+    }
+
+    public function get_data_to_create_contract()
+    {
+        $user = Auth::user();
+
+        if ($user->role != 'admin' && $user->role != 'superadmin') {
+            return Responses::BADREQUEST('Apenas usuários permitidos podem executar essa ação!');
+        }
+
+        $getYoungApprentices = User::select('id', 'name')->where('role', 'youngapprentice')->orderBy('name', 'ASC')->get();
+
+        $getCompanies = CompanyData::select('user_id', 'social_reason_company')->orderBy('social_reason_company', 'ASC')->get();
+
+        $getCBOS = Cbos::select('id', 'code')->orderBy('code', 'ASC')->get();
+
+        $data = [
+            "young_apprentices" => $getYoungApprentices,
+            "companies" => $getCompanies,
+            "cbos" => $getCBOS
+        ];
+
+        return Responses::OK('', $data);
+    }
+
+    public function get_full_infos_to_make_contract($apprentice_id, $company_id, $cbo_id)
+    {
+        if (!$apprentice_id || !$company_id || !$cbo_id) {
+            return Responses::BADREQUEST('Informações insuficientes para montar o contrato!');
+        }
+
+        $user = Auth::user();
+
+        if ($user->role != 'admin' && $user->role != 'superadmin') {
+            return Responses::BADREQUEST('Apenas usuários permitidos podem executar essa ação!');
+        }
+
+        $getYoungApprentice = User::where('id', $apprentice_id)->with('young_apprentice_data')->first();
+
+        $getCompany = User::where('id', $company_id)->with('company_data')->first();
+
+        $getCbo = Cbos::where('id', $cbo_id)->first();
+
+        $data = [
+            "young_apprentice" => $getYoungApprentice,
+            "company" => $getCompany,
+            "cbo" => $getCbo
+        ];
+
+        return Responses::OK('', $data);
     }
 }
