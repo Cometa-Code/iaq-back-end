@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Helpers\Responses;
 use App\Http\Requests\User\CreateUserRequest;
 use App\Http\Requests\User\LoginRequest;
+use App\Models\Cbos;
 use App\Models\CompanyData;
+use App\Models\Contracts;
 use App\Models\User;
 use App\Models\YoungApprenticeData;
 use Illuminate\Http\Request;
@@ -119,5 +121,28 @@ class UserController extends Controller
         return Responses::OK('Usuário autenticado com sucesso!', [
             'token' => $token
         ]);
+    }
+
+    public function dash_infos()
+    {
+        $user = Auth::user();
+
+        if ($user->role != 'admin' && $user->role != 'superadmin') {
+            return Responses::BADREQUEST('Apenas usuários permitidos podem executar essa ação!');
+        }
+
+        $youngApprendities = User::where('role', 'youngapprentice')->count();
+        $companies = User::where('role', 'company')->count();
+        $cbos = Cbos::count();
+        $contracts = Contracts::count();
+
+        $data = [
+            "young_apprendities" => $youngApprendities,
+            "companies" => $companies,
+            "cbos" => $cbos,
+            "contracts" => $contracts
+        ];
+
+        return Responses::OK('', $data);
     }
 }

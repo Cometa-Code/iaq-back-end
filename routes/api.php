@@ -25,6 +25,7 @@ Route::post('/user/login', [UserController::class, 'login']);
 Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::get('/user', [UserController::class, 'user']);
+    Route::get('/dash_infos', [UserController::class, 'dash_infos']);
 
     Route::get('/young_apprentices', [YoungApprenticesController::class, 'index']);
     Route::post('/young_apprentices', [YoungApprenticesController::class, 'store']);
