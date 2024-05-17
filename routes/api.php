@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CbosController;
 use App\Http\Controllers\CompaniesController;
+use App\Http\Controllers\ContractsController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\YoungApprenticesController;
 use Illuminate\Http\Request;
@@ -36,5 +37,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/cbos', [CbosController::class, 'index']);
     Route::post('/cbos', [CbosController::class, 'store']);
     Route::put('/cbos/{id}', [CbosController::class, 'update']);
+
+    Route::get('/contracts', [ContractsController::class, 'index']);
+    Route::get('/contracts/{id}', [ContractsController::class, 'show']);
+    Route::post('/contracts', [ContractsController::class, 'store']);
+    Route::put('/contracts/{id}', [ContractsController::class, 'update']);
 
 });
