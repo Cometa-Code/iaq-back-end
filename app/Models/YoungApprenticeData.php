@@ -14,6 +14,7 @@ class YoungApprenticeData extends Model
         "user_id",
         "date_of_birth",
         "mother_name",
+        "father_name",
         "gener",
         "marital_status",
         "document_rg",
