@@ -86,14 +86,14 @@ class CompaniesController extends Controller
     {
         $user = Auth::user();
 
-        if ($user->role != 'admin' && $user->role != 'superadmin') {
-            return Responses::BADREQUEST('Apenas usuários permitidos podem executar essa ação!');
-        }
-
         $getUser = User::where('id', $id)->first();
 
         if (!$getUser) {
             return Responses::NOTFOUND('Usuário não encontrado!');
+        }
+
+        if ($getUser->id != $user->id && ($user->role != 'admin' && $user->role != 'superadmin')) {
+            return Responses::BADREQUEST('Apenas usuários permitidos podem executar essa ação!');
         }
 
         $updateUser = $getUser->update($request->all());
