@@ -142,4 +142,24 @@ class ContractsController extends Controller
 
         return Responses::OK('', $data);
     }
+
+    public function update(Request $request, $id)
+    {
+        $user = Auth::user();
+
+        if ($user->role != 'admin' && $user->role != 'superadmin') {
+            return Responses::BADREQUEST('Apenas usuários permitidos podem executar essa ação!');
+        }
+
+        $getContract = Contracts::where('id', $id)->first();
+
+        if (!$getContract) {
+            return Responses::BADREQUEST('Contrato não localizado!');
+        }
+
+        $getContract->update($request->all());
+        $getContract->save();
+
+        return Responses::OK('Contrato atualizado com sucesso!');
+    }
 }
