@@ -39,6 +39,10 @@ class YoungApprenticeData extends Model
         "army_reservist_number",
         "has_informatics_knowledge",
         "has_disability",
+        "working_day",
+        "work_days_select",
+        "work_schedule",
+        "program_total_contract",
     ];
 
     public function user() : BelongsTo
