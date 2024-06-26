@@ -16,6 +16,8 @@ class Contracts extends Model
         'cbo_id',
         'contract_number',
         'description',
+        'period_of',
+        'period_until',
     ];
 
     public function young_apprentice() : belongsTo
