@@ -43,6 +43,16 @@ class YoungApprenticeData extends Model
         "work_days_select",
         "work_schedule",
         "program_total_contract",
+        "total_hours_program",
+        "period_of_program",
+        "period_until_program",
+        "total_hours_phase_theoretical",
+        "total_hours_theoretical",
+        "total_week_hours_theoretical",
+        "day_theoretical",
+        "hours_phase_theoretical",
+        "period_of_theoretical_phase",
+        "period_until_theoretical_phase",
     ];
 
     public function user() : BelongsTo
