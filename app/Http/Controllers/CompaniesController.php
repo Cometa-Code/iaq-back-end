@@ -43,7 +43,7 @@ class CompaniesController extends Controller
             return Responses::BADREQUEST('Apenas usuários permitidos podem executar essa ação!');
         }
 
-        $getUser = User::where('email', $request->email)
+        $getUser = User::where('email', $request->email_youth_supervisor)
                         ->orWhere('principal_document', $request->cnpj_company)
                         ->first();
 
