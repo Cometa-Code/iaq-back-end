@@ -134,10 +134,13 @@ class ContractsController extends Controller
 
         $getCbo = Cbos::where('id', $cbo_id)->first();
 
+        $lastContractId = Contracts::orderBy('id', 'DESC')->first();
+
         $data = [
             "young_apprentice" => $getYoungApprentice,
             "company" => $getCompany,
-            "cbo" => $getCbo
+            "cbo" => $getCbo,
+            "last_contract_id" => $lastContractId->id
         ];
 
         return Responses::OK('', $data);
