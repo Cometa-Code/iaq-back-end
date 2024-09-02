@@ -136,6 +136,10 @@ class ContractsController extends Controller
 
         $lastContractId = Contracts::orderBy('id', 'DESC')->first();
 
+        if (!$lastContractId) {
+            $lastContractId = 01;
+        }
+
         $data = [
             "young_apprentice" => $getYoungApprentice,
             "company" => $getCompany,
