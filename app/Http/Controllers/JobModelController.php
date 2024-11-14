@@ -16,7 +16,6 @@ class JobModelController extends Controller
             'company_id' => 'required|integer',
             'title' => 'required|string',
             'description' => 'required|string',
-            'number_of_vacancies' => 'required|integer',
             'contact' => 'required|string',
         ]);
 
@@ -36,7 +35,7 @@ class JobModelController extends Controller
             'user_id' => $getCompany->id,
             'title' => $validated['title'],
             'description' => $validated['description'],
-            'number_of_vacancies' => $validated['number_of_vacancies'],
+            'number_of_vacancies' => 1,
             'contact' => $validated['contact']
         ]);
 
@@ -51,12 +50,35 @@ class JobModelController extends Controller
     {
         $getJobs = JobModel::with('user:id,name')->orderBy('id', 'DESC')->get();
 
+        if (!$getJobs) {
+            return Responses::BADREQUEST('Não foi possível encontrar jobs');
+        }
+
         return $getJobs;
+    }
+
+    public function index_admin(Request $request)
+    {
+        $user = Auth::user();
+
+        if ($user->role != 'admin' && $user->role != 'superadmin') {
+            return Responses::BADREQUEST('Apenas usuários permitidos podem executar essa ação!');
+        }
+
+        $itemsPerPage = $request->query('items_per_page', 10);
+
+        $getJobs = JobModel::with('user.company_data')->orderBy('id', 'DESC')->paginate($itemsPerPage);
+
+        return Responses::OK('', $getJobs);
     }
 
     public function show($id)
     {
-        $getJob = JobModel::where('id', $id)->with('user:id,name')->get();
+        $getJob = JobModel::where('id', $id)->with('user:id,name')->first();
+
+        if (!$getJob) {
+            return Responses::BADREQUEST('Não foi possível encontrar esse job');
+        }
 
         return $getJob;
     }

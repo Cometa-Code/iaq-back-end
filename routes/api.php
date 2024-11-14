@@ -23,6 +23,9 @@ use Illuminate\Support\Facades\Route;
 Route::post('/user', [UserController::class, 'store']);
 Route::post('/user/login', [UserController::class, 'login']);
 
+Route::get('/jobs', [JobModelController::class, 'index']);
+Route::get('/jobs/{id}', [JobModelController::class, 'show']);
+
 Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::get('/user', [UserController::class, 'user']);
@@ -49,8 +52,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::put('/contracts/{id}', [ContractsController::class, 'update']);
 
     Route::post('/jobs', [JobModelController::class, 'store']);
-    Route::get('/jobs', [JobModelController::class, 'index']);
-    Route::get('/jobs/{id}', [JobModelController::class, 'show']);
+    Route::get('/jobs_admin', [JobModelController::class, 'index_admin']);
     Route::delete('/jobs/{id}', [JobModelController::class, 'destroy']);
 
 });
