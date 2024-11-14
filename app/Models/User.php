@@ -67,4 +67,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Contracts::class, 'company_id');
     }
+
+    public function jobs() : HasMany
+    {
+        return $this->hasMany(JobModel::class, 'user_id');
+    }
 }

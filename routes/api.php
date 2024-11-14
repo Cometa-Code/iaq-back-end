@@ -3,6 +3,7 @@
 use App\Http\Controllers\CbosController;
 use App\Http\Controllers\CompaniesController;
 use App\Http\Controllers\ContractsController;
+use App\Http\Controllers\JobModelController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\YoungApprenticesController;
 use Illuminate\Http\Request;
@@ -46,5 +47,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/contracts/data/to_make_contract/{apprentice_id}/{company_id}/{cbo_id}', [ContractsController::class, 'get_full_infos_to_make_contract']);
     Route::post('/contracts', [ContractsController::class, 'store']);
     Route::put('/contracts/{id}', [ContractsController::class, 'update']);
+
+    Route::post('/jobs', [JobModelController::class, 'store']);
+    Route::get('/jobs', [JobModelController::class, 'index']);
+    Route::get('/jobs/{id}', [JobModelController::class, 'show']);
+    Route::delete('/jobs/{id}', [JobModelController::class, 'destroy']);
 
 });
