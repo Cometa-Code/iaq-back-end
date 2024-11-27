@@ -72,4 +72,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(JobModel::class, 'user_id');
     }
+
+    public function presence() : HasMany
+    {
+        return $this->hasMany(User::class);
+    }
 }

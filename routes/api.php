@@ -6,6 +6,7 @@ use App\Http\Controllers\ContractsController;
 use App\Http\Controllers\JobModelController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\YoungApprenticesController;
+use App\Http\Controllers\YoungApprenticesPresenceController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -55,4 +56,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/jobs_admin', [JobModelController::class, 'index_admin']);
     Route::delete('/jobs/{id}', [JobModelController::class, 'destroy']);
 
+    Route::post('/presences', [YoungApprenticesPresenceController::class, 'create']);
+    Route::get('/presences/{userId}', [YoungApprenticesPresenceController::class, 'show']);
+    Route::delete('/presences/{userId}', [YoungApprenticesPresenceController::class, 'destroy']);
 });
