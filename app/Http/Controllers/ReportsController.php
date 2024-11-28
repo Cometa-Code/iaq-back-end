@@ -15,6 +15,7 @@ class ReportsController extends Controller
             'report_type' => 'required',
             'course' => '',
             'course_day' => '',
+            'company_id' => '',
         ]);
 
         $user = Auth::user();
@@ -40,6 +41,14 @@ class ReportsController extends Controller
 
         if ($validated['report_type'] == 'jovens-sem-contrato') {
             $getReport = User::where('role', 'youngapprentice')->with('young_apprentice_data:id,user_id,phone_number,education,date_of_birth,address_city,address')->doesntHave('young_apprentice_contracts')->get(['id', 'name', 'email']);
+        }
+
+        if ($validated['report_type'] == 'jovens-por-empresa') {
+            $getReport = User::whereHas('young_apprentice_contracts', function ($query) use ($validated) {
+                $query->where('company_id', $validated['company_id']);
+            })
+            ->with('young_apprentice_data:id,user_id,phone_number,address_city,address')
+            ->get(['id', 'name', 'email']);
         }
 
         return Responses::OK('', $getReport);
