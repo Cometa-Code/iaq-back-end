@@ -4,6 +4,7 @@ use App\Http\Controllers\CbosController;
 use App\Http\Controllers\CompaniesController;
 use App\Http\Controllers\ContractsController;
 use App\Http\Controllers\JobModelController;
+use App\Http\Controllers\ReportsController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\YoungApprenticesController;
 use App\Http\Controllers\YoungApprenticesPresenceController;
@@ -59,4 +60,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/presences', [YoungApprenticesPresenceController::class, 'create']);
     Route::get('/presences/{userId}', [YoungApprenticesPresenceController::class, 'show']);
     Route::delete('/presences/{userId}', [YoungApprenticesPresenceController::class, 'destroy']);
+
+    Route::post('/reports', [ReportsController::class, 'get_report']);
 });
