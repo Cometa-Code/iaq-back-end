@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Helpers\Responses;
+use App\Models\User;
 use App\Models\YoungApprenticesPresence;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -35,6 +36,10 @@ class ReportsController extends Controller
                 ->with('user:id,name,email')
                 ->groupBy('id', 'user_id', 'course')
                 ->get();
+        }
+
+        if ($validated['report_type'] == 'jovens-sem-contrato') {
+            $getReport = User::where('role', 'youngapprentice')->with('young_apprentice_data:id,user_id,phone_number,education,date_of_birth,address_city,address')->doesntHave('young_apprentice_contracts')->get(['id', 'name', 'email']);
         }
 
         return Responses::OK('', $getReport);
