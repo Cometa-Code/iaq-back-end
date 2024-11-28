@@ -50,7 +50,7 @@ class YoungApprenticesPresenceController extends Controller
 
         $itemsPerPage = $request->query('items_per_page', 10);
 
-        $getPresences = YoungApprenticesPresence::where('user_id', $userId)->orderBy('date', 'DESC')->paginate($itemsPerPage);
+        $getPresences = YoungApprenticesPresence::where('user_id', $userId)->with('user:id,name')->orderBy('date', 'DESC')->paginate($itemsPerPage);
 
         return Responses::OK('', $getPresences);
     }
