@@ -182,4 +182,23 @@ class ContractsController extends Controller
 
         return Responses::OK('Contrato atualizado com sucesso!');
     }
+
+    public function destroy(Request $request, $id)
+    {
+        $user = Auth::user();
+
+        if ($user->role != 'admin' && $user->role != 'superadmin') {
+            return Responses::BADREQUEST('Apenas usuários permitidos podem executar essa ação!');
+        }
+
+        $getContract = Contracts::where('id', $id)->first();
+
+        if (!$getContract) {
+            return Responses::BADREQUEST('Contrato não localizado!');
+        }
+
+        $getContract->delete();
+
+        return Responses::OK('Contrato deletado com sucesso!');
+    }
 }

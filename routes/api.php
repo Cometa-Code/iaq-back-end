@@ -52,6 +52,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/contracts/data/to_make_contract/{apprentice_id}/{company_id}/{cbo_id}', [ContractsController::class, 'get_full_infos_to_make_contract']);
     Route::post('/contracts', [ContractsController::class, 'store']);
     Route::put('/contracts/{id}', [ContractsController::class, 'update']);
+    Route::delete('/contracts/{id}', [ContractsController::class, 'destroy']);
 
     Route::post('/jobs', [JobModelController::class, 'store']);
     Route::get('/jobs_admin', [JobModelController::class, 'index_admin']);
