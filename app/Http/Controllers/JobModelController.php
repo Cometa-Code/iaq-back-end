@@ -13,7 +13,6 @@ class JobModelController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'company_id' => 'required|integer',
             'title' => 'required|string',
             'description' => 'required|string',
             'contact' => 'required|string',
@@ -25,14 +24,7 @@ class JobModelController extends Controller
             return Responses::BADREQUEST('Apenas usuários permitidos podem executar essa ação!');
         }
 
-        $getCompany = User::where('id', $request->company_id)->first();
-
-        if (!$getCompany) {
-            return Responses::NOTFOUND('Não foi possível encontrar essa empresa!');
-        }
-
         $createJob = JobModel::create([
-            'user_id' => $getCompany->id,
             'title' => $validated['title'],
             'description' => $validated['description'],
             'number_of_vacancies' => 1,
