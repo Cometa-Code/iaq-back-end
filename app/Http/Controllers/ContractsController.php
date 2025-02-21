@@ -63,11 +63,18 @@ class ContractsController extends Controller
         $termsFilter = $request->query('terms_filter', '');
 
         $listContracts = Contracts::where('contract_number', 'LIKE', "%$termsFilter%")
-                                    ->with('young_apprentice.young_apprentice_data')
-                                    ->with('company.company_data')
-                                    ->with('cbo')
-                                    ->orderBy('id', 'DESC')
-                                    ->paginate($itemsPerPage);
+            ->orWhereHas('young_apprentice.young_apprentice_data.user', function ($query) use ($termsFilter) {
+                $query->where('name', 'LIKE', "%$termsFilter%");
+            })
+            ->orWhereHas('company.company_data.user', function ($query) use ($termsFilter) {
+                $query->where('name', 'LIKE', "%$termsFilter%");
+            })
+            ->with('young_apprentice.young_apprentice_data.user')
+            ->with('company.company_data.user')
+            ->with('cbo')
+            ->orderBy('id', 'DESC')
+            ->paginate($itemsPerPage);
+
 
         return Responses::OK('', $listContracts);
     }
